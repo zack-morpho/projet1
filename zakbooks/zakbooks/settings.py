@@ -97,6 +97,10 @@ LOGOUT_REDIRECT_URL = '/login/'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
+CSRF_TRUSTED_ORIGINS = [
+    'https://projet1-production-e398.up.railway.app',
+]
+
 
 
 
