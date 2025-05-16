@@ -1,8 +1,22 @@
-# Python bytecode
+*.pyc
 __pycache__/
-*.py[cod]
-*$py.class
-
-# Django
-*.log
 db.sqlite3
+staticfiles/
+.env
+*.log
+
+# VS Code
+.vscode/
+
+# Python virtual environment
+venv/
+env/
+
+# Media files
+media/
+
+# Local development settings
+local_settings.py
+
+# Database backups
+*.dump
