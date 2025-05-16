@@ -47,5 +47,4 @@ urlpatterns = [
     path('payer_reservation/<str:isbn>/', Reserver.payer_reservation, name='payer_reservation'),
     path('book_par_cat/<str:categorie_code>/', book_par_cat, name='book_par_cat'),
     path('aide/', aide_view, name='aide'),
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
