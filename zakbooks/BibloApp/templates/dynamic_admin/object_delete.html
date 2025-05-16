@@ -1,0 +1,38 @@
+{% extends "dynamic_admin/base_admin.html" %}
+
+{% block title %}Supprimer - {{ model_name }}{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-6 col-md-8">
+            <div class="card shadow-lg border-0">
+                <div class="card-body p-4">
+                    <div class="text-center mb-4">
+                        <div class="display-1 text-danger">
+                            <i class="bi bi-exclamation-triangle-fill"></i>
+                        </div>
+                        <h2 class="mt-3 mb-4">Confirmer la suppression</h2>
+                        <div class="alert alert-warning">
+                            <p class="mb-0">Voulez-vous vraiment supprimer cet objet du modèle <strong>{{ model_name }}</strong> ?</p>
+                            <p class="mb-0 mt-2"><strong>ID:</strong> {{ obj.pk }}</p>
+                        </div>
+                    </div>
+                    
+                    <form method="post" class="text-center">
+                        {% csrf_token %}
+                        <div class="d-flex justify-content-center gap-3">
+                            <button type="submit" class="btn btn-danger">
+                                <i class="bi bi-trash"></i> Supprimer définitivement
+                            </button>
+                            <a href="{% url 'dynamic_admin_object_list' model_name %}" class="btn btn-secondary">
+                                <i class="bi bi-x-circle"></i> Annuler
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

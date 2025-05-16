@@ -1,0 +1,93 @@
+{% extends "accounts/account_base.html" %}
+
+{% block title %}Mes Messages - ZakBooks{% endblock %}
+
+{% block account_content %}
+<div class="content-section">
+    <div class="section-header">
+        <h2><i class="fas fa-envelope"></i> Mes Messages</h2>
+        <div class="filter-options">
+            <a href="{% url 'user-messages' %}" class="filter-link {% if not request.GET.status %}active{% endif %}">Tous</a>
+            <a href="{% url 'user-messages' %}?status=unread" class="filter-link {% if request.GET.status == 'unread' %}active{% endif %}">Non lus {% if unread_count %}<span class="badge">{{ unread_count }}</span>{% endif %}</a>
+            <a href="{% url 'user-messages' %}?status=read" class="filter-link {% if request.GET.status == 'read' %}active{% endif %}">Lus</a>
+        </div>
+    </div>
+    
+    {% if user_messages %}
+    <div class="message-list">
+        {% for msg in user_messages %}
+        <div class="message-item {% if not msg.estLu %}unread{% endif %}">
+            <div class="message-header">
+                <div class="message-sender">{{ msg.expediteur }}</div>
+                <div class="message-date">{{ msg.dateEnvoi }}</div>
+            </div>
+            <div class="message-subject">{{ msg.sujet }}</div>
+            <div class="message-content">
+                {{ msg.contenu }}
+            </div>
+            {% if not msg.estLu %}
+            <div class="message-actions">
+                <a href="{% url 'mark-message-read' msg.id %}" class="mark-read-btn" data-message-id="{{ msg.id }}">
+                    <i class="fas fa-check"></i> Marquer comme lu
+                </a>
+            </div>
+            {% endif %}
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="empty-state">
+        <i class="fas fa-envelope empty-icon"></i>
+        <p>Vous n'avez aucun message{% if request.GET.status %} dans cette catégorie{% endif %}.</p>
+    </div>
+    {% endif %}
+</div>
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Add AJAX functionality for marking messages as read
+        const markReadButtons = document.querySelectorAll('.mark-read-btn');
+        
+        markReadButtons.forEach(button => {
+            button.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const messageId = this.getAttribute('data-message-id');
+                const messageItem = this.closest('.message-item');
+                
+                fetch(this.href, {
+                    method: 'GET',
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        messageItem.classList.remove('unread');
+                        this.parentNode.remove();
+                        
+                        // Update unread count in the filter
+                        const unreadBadge = document.querySelector('.filter-link[href*="unread"] .badge');
+                        if (unreadBadge) {
+                            let count = parseInt(unreadBadge.textContent);
+                            if (count > 0) {
+                                count--;
+                                unreadBadge.textContent = count;
+                                if (count === 0) {
+                                    unreadBadge.remove();
+                                }
+                            }
+                        }
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+            });
+        });
+    });
+</script>
+{% endblock %}
+{% endblock %}

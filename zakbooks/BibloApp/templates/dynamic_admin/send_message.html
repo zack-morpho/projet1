@@ -1,0 +1,59 @@
+{% extends "dynamic_admin/base_admin.html" %}
+
+{% block title %}Envoyer un Message - ZakBooks{% endblock %}
+
+{% block content %}
+<div class="content-container">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="page-title">
+            <i class="bi bi-send"></i> Envoyer un Message
+        </h1>
+    </div>
+    
+    <div class="card mb-4">
+        <div class="card-header bg-primary text-white">
+            <h5 class="mb-0">Formulaire d'envoi de message</h5>
+        </div>
+        <div class="card-body">
+            <form method="post" action="{% if selected_user %}{% url 'admin-send-message-to-user' selected_user.id %}{% else %}{% url 'admin-send-message' %}{% endif %}">
+                {% csrf_token %}
+                
+                <div class="mb-3">
+                    <label for="recipient" class="form-label">Destinataire</label>
+                    <select id="recipient" name="recipient" class="form-select" required {% if selected_user %}disabled{% endif %}>
+                        <option value="">Sélectionner un utilisateur</option>
+                        {% for user in users %}
+                        <option value="{{ user.id }}" {% if selected_user and selected_user.id == user.id %}selected{% endif %}>
+                            {{ user.prenom }} {{ user.nom }} ({{ user.email }})
+                        </option>
+                        {% endfor %}
+                    </select>
+                    {% if selected_user %}
+                    <input type="hidden" name="recipient" value="{{ selected_user.id }}">
+                    {% endif %}
+                    <div class="form-text">Sélectionnez l'utilisateur à qui vous souhaitez envoyer un message.</div>
+                </div>
+                
+                <div class="mb-3">
+                    <label for="subject" class="form-label">Sujet</label>
+                    <input type="text" id="subject" name="subject" class="form-control" required>
+                </div>
+                
+                <div class="mb-3">
+                    <label for="content" class="form-label">Message</label>
+                    <textarea id="content" name="content" rows="6" class="form-control" required></textarea>
+                </div>
+                
+                <div class="d-flex justify-content-between">
+                    <a href="{% url 'admin-messages' %}" class="btn btn-secondary">
+                        <i class="bi bi-arrow-left"></i> Retour aux messages
+                    </a>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="bi bi-send"></i> Envoyer le message
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

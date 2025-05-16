@@ -1,0 +1,158 @@
+{% extends "dynamic_admin/base_admin.html" %}
+
+{% block title %}ZakBooks Admin - Dashboard{% endblock %}
+
+{% block content %}
+<div class="content-container">
+    <h1 class="page-title mb-4"><i class="bi bi-grid-1x2-fill"></i> Dashboard ZakBooks</h1>
+    
+    <div class="row stats-row mb-4">
+        <div class="col-lg-3 col-md-6 mb-4">
+            <div class="stats-card">
+                <div class="stats-icon">
+                    <i class="bi bi-book"></i>
+                </div>
+                <div class="stats-info">
+                    <h4>{{ total_books }}</h4>
+                    <span>Livres disponibles</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6 mb-4">
+            <div class="stats-card">
+                <div class="stats-icon">
+                    <i class="bi bi-people"></i>
+                </div>
+                <div class="stats-info">
+                    <h4>{{ total_users }}</h4>
+                    <span>Utilisateurs inscrits</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6 mb-4">
+            <div class="stats-card">
+                <div class="stats-icon">
+                    <i class="bi bi-arrow-left-right"></i>
+                </div>
+                <div class="stats-info">
+                    <h4>{{ total_loans }}</h4>
+                    <span>Emprunts actifs</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6 mb-4">
+            <div class="stats-card">
+                <div class="stats-icon">
+                    <i class="bi bi-currency-dollar"></i>
+                </div>
+                <div class="stats-info">
+                    <h4>{{ total_fines }}</h4>
+                    <span>Total amendes</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <h2 class="section-title">Gestion de la bibliothèque</h2>
+    <div class="row modules-row">
+        <div class="col-md-4 mb-4">
+            <a href="{% url 'dynamic_admin_object_list' 'Livre' %}" class="text-decoration-none">
+                <div class="card zakbooks-card h-100">
+                    <div class="card-body">
+                        <i class="bi bi-book" style="font-size: 2.5rem; color: #8E1616;"></i>
+                        <h5 class="card-title mt-3">Gestion des Livres</h5>
+                        <p class="card-text">{{ total_books }} livres dans la bibliothèque</p>
+                        <div class="d-flex justify-content-end">
+                            <span class="btn btn-sm btn-outline-primary">Gérer <i class="bi bi-arrow-right"></i></span>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <div class="col-md-4 mb-4">
+            <a href="{% url 'dynamic_admin_object_list' 'Utilisateur' %}" class="text-decoration-none">
+                <div class="card zakbooks-card h-100">
+                    <div class="card-body">
+                        <i class="bi bi-people" style="font-size: 2.5rem; color: #8E1616;"></i>
+                        <h5 class="card-title mt-3">Gestion des Utilisateurs</h5>
+                        <p class="card-text">{{ total_users }} utilisateurs inscrits</p>
+                        <div class="d-flex justify-content-end">
+                            <span class="btn btn-sm btn-outline-primary">Gérer <i class="bi bi-arrow-right"></i></span>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <div class="col-md-4 mb-4">
+            <a href="{% url 'dynamic_admin_object_list' 'Emprunt' %}" class="text-decoration-none">
+                <div class="card zakbooks-card h-100">
+                    <div class="card-body">
+                        <i class="bi bi-arrow-left-right" style="font-size: 2.5rem; color: #8E1616;"></i>
+                        <h5 class="card-title mt-3">Gestion des Emprunts</h5>
+                        <p class="card-text">{{ total_loans }} emprunts actifs</p>
+                        <div class="d-flex justify-content-end">
+                            <span class="btn btn-sm btn-outline-primary">Gérer <i class="bi bi-arrow-right"></i></span>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <div class="col-md-4 mb-4">
+            <a href="{% url 'dynamic_admin_object_list' 'Amende' %}" class="text-decoration-none">
+                <div class="card zakbooks-card h-100">
+                    <div class="card-body">
+                        <i class="bi bi-currency-dollar" style="font-size: 2.5rem; color: #8E1616;"></i>
+                        <h5 class="card-title mt-3">Gestion des Amendes</h5>
+                        <p class="card-text">{{ total_fines }} amendes enregistrées</p>
+                        <div class="d-flex justify-content-end">
+                            <span class="btn btn-sm btn-outline-primary">Gérer <i class="bi bi-arrow-right"></i></span>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <div class="col-md-4 mb-4">
+            <a href="{% url 'dynamic_admin_object_list' 'Commentaire' %}" class="text-decoration-none">
+                <div class="card zakbooks-card h-100">
+                    <div class="card-body">
+                        <i class="bi bi-chat-left-text" style="font-size: 2.5rem; color: #8E1616;"></i>
+                        <h5 class="card-title mt-3">Gestion des Commentaires</h5>
+                        <p class="card-text">{{ total_comments }} commentaires publiés</p>
+                        <div class="d-flex justify-content-end">
+                            <span class="btn btn-sm btn-outline-primary">Gérer <i class="bi bi-arrow-right"></i></span>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <div class="col-md-4 mb-4">
+            <a href="{% url 'dynamic_admin_object_list' 'Reservation' %}" class="text-decoration-none">
+                <div class="card zakbooks-card h-100">
+                    <div class="card-body">
+                        <i class="bi bi-calendar-check" style="font-size: 2.5rem; color: #8E1616;"></i>
+                        <h5 class="card-title mt-3">Gestion des Réservations</h5>
+                        <p class="card-text">{{ total_reservations }} réservations actives</p>
+                        <div class="d-flex justify-content-end">
+                            <span class="btn btn-sm btn-outline-primary">Gérer <i class="bi bi-arrow-right"></i></span>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <div class="col-md-4 mb-4">
+            <a href="{% url 'statistical_reports' %}" class="text-decoration-none">
+                <div class="card zakbooks-card h-100">
+                    <div class="card-body">
+                        <i class="bi bi-bar-chart" style="font-size: 2.5rem; color: #8E1616;"></i>
+                        <h5 class="card-title mt-3">Rapports Statistiques</h5>
+                        <p class="card-text">Livres populaires, retardataires, etc.</p>
+                        <div class="d-flex justify-content-end">
+                            <span class="btn btn-sm btn-outline-primary">Consulter <i class="bi bi-arrow-right"></i></span>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,42 @@
+{% load static %}
+<link rel="stylesheet" href="{% static 'application/CSS/payment.css' %}">
+
+
+<div class="payment-modal-bg">
+  <div class="payment-modal">
+    <button class="close-btn" onclick="window.location.href='{% url 'emprunter_livre' livre.isbn %}'">&times;</button>
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-danger">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+    <div class="logos">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/0/04/Mastercard-logo.png" alt="Mastercard" style="height:32px;">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/5/5e/Visa_Inc._logo.svg" alt="Visa" style="height:32px;">
+      {% comment %} <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal" style="height:32px;"> {% endcomment %}
+    </div>
+    <h2>Credit card</h2>
+    <form method="post">
+      {% csrf_token %}
+      <label for="cardholder">Cardholder Name</label>
+      <input type="text" id="cardholder" name="cardholder" required>
+
+      <label for="cardnumber">Card Number</label>
+      <input type="text" id="cardnumber" name="cardnumber" maxlength="19" pattern="[0-9 ]+" required>
+
+      <div class="row">
+        <div style="flex:2;">
+          <label for="expdate">Expiration Date</label>
+          <input type="text" id="expdate" name="expdate" placeholder="MM/YY" maxlength="5" pattern="\d{2}/\d{2}" required>
+        </div>
+        <div style="flex:1;">
+          <label for="cvv">CVV</label>
+          <input type="password" id="cvv" class="cvv" name="cvv" maxlength="4" required>
+        </div>
+      </div>
+      <button type="submit" class="add-btn">Payer</button>
+    </form>
+  </div>
+</div>

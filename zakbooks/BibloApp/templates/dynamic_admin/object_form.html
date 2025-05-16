@@ -1,0 +1,53 @@
+{% extends "dynamic_admin/base_admin.html" %}
+
+{% block title %}{% if form.instance.pk %}Modifier{% else %}Créer{% endif %} un {{ model_name }} - ZakBooks{% endblock %}
+
+{% block content %}
+<div class="container py-3">
+    <div class="row justify-content-center">
+        <div class="col-lg-8 col-md-10">
+            <div class="card shadow-lg border-0">
+                <div class="card-body p-4">
+                    <h2 class="mb-4 text-center" style="color: var(--primary-color); font-weight: 700;">
+                        <i class="bi {% if form.instance.pk %}bi-pencil-square{% else %}bi-plus-circle{% endif %}"></i>
+                        {% if form.instance.pk %}Modifier{% else %}Créer{% endif %} un {{ model_name }}
+                    </h2>
+                    {% if messages %}
+                        <div class="mb-3">
+                            {% for message in messages %}
+                                <div class="alert alert-{{ message.tags }}" role="alert">{{ message }}</div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                    <form method="post" novalidate>
+                        {% csrf_token %}
+                        {% for field in form %}
+                            <div class="mb-3">
+                                <label for="id_{{ field.name }}" class="form-label">
+                                    {{ field.label }}{% if field.field.required %} <span class="text-danger">*</span>{% endif %}
+                                </label>
+                                {{ field }}
+                                {% if field.help_text %}
+                                    <div class="form-text">{{ field.help_text }}</div>
+                                {% endif %}
+                                {% for error in field.errors %}
+                                    <div class="invalid-feedback d-block">{{ error }}</div>
+                                {% endfor %}
+                            </div>
+                        {% endfor %}
+                        <div class="d-flex justify-content-between align-items-center mt-4">
+                            <button type="submit" class="btn btn-success px-4">
+                                <i class="bi {% if form.instance.pk %}bi-save{% else %}bi-plus-lg{% endif %}"></i>
+                                {% if form.instance.pk %}Enregistrer{% else %}Créer{% endif %}
+                            </button>
+                            <a href="{% url 'dynamic_admin_object_list' model_name %}" class="btn btn-outline-secondary ms-2">
+                                <i class="bi bi-x-lg"></i> Annuler
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

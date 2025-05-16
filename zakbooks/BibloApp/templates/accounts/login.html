@@ -1,0 +1,84 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="{% static 'application/css/login.css' %}">
+    <script src="{% static 'application/js/login.js' %}" defer></script>
+</head>
+<body>
+    <h1>Login</h1>
+    <p>Welcome back! Please enter your credentials to access your account.</p>
+
+    <form method="post">
+        {% csrf_token %}
+        <div>
+          {{ form.username.label_tag }}
+          {{ form.username }}
+          {% for error in form.username.errors %}
+            <div class="form-error">{{ error }}</div>
+          {% endfor %}
+        </div>
+        
+        <div>
+          {{ form.password.label_tag }}
+          {{ form.password }}
+          {% for error in form.password.errors %}
+            <div class="form-error">{{ error }}</div>
+          {% endfor %}
+        </div>
+        
+        {% if form.non_field_errors %}
+          <div class="form-error">
+            {% for error in form.non_field_errors %}
+              <p>{{ error }}</p>
+            {% endfor %}
+          </div>
+        {% endif %}        
+        <button type="submit">Login</button>
+
+        <p>Don't have an account? <a href="{% url 'signup' %}">Sign up</a></p>
+
+    </form>
+
+
+</body>
+</html>
+
+
+
+
+
+
+
+{% comment %} {% load static %}  
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="{% static 'static/application/CSS/login.css' %}">
+    <script src="{% static 'application/js/login.js' %}" defer></script>
+</head>
+
+
+
+<body>
+
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Login</button>
+  </form>
+
+  <p>Don't have an account? <a href="{% url 'signup' %}">Sign up</a></p>
+
+</body>
+ {% endcomment %}
+
+ 

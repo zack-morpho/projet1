@@ -1,0 +1,100 @@
+{% extends 'application/base.html' %}
+{% load static %}
+
+{% block title %}Aide - ZakBooks{% endblock %}
+
+
+
+{% block content %}
+
+<link rel="stylesheet" href="{% static 'application/CSS/aide.css' %}">
+
+
+<div class="aide-container">
+    <h1 class="aide-title">Centre d'Aide</h1>
+    
+    <div class="aide-sections">
+        <div class="aide-section">
+            <h2><i class="fas fa-book"></i> Utilisation de la Bibliothèque</h2>
+            <div class="aide-content">
+                <h3>Comment emprunter un livre?</h3>
+                <p>Pour emprunter un livre, recherchez-le dans notre catalogue, cliquez sur "Emprunter" et suivez les instructions. Vous pouvez emprunter jusqu'à 5 livres simultanément pour une durée de 14 jours.</p>
+                
+                <h3>Comment retourner un livre?</h3>
+                <p>Vous pouvez retourner vos livres à la bibliothèque ou utiliser l'option "Retourner" dans votre espace personnel sur le site.</p>
+            </div>
+        </div>
+        
+        <div class="aide-section">
+            <h2><i class="fas fa-user-circle"></i> Gestion du Compte</h2>
+            <div class="aide-content">
+                <h3>Comment modifier mes informations personnelles?</h3>
+                <p>Accédez à votre profil en cliquant sur votre nom d'utilisateur en haut à droite, puis sélectionnez "Modifier mon profil".</p>
+                
+                <h3>J'ai oublié mon mot de passe</h3>
+                <p>Sur la page de connexion, cliquez sur "Mot de passe oublié" et suivez les instructions pour réinitialiser votre mot de passe.</p>
+            </div>
+        </div>
+        
+        <div class="aide-section">
+            <h2><i class="fas fa-search"></i> Recherche et Navigation</h2>
+            <div class="aide-content">
+                <h3>Comment rechercher un livre spécifique?</h3>
+                <p>Utilisez la barre de recherche en haut de la page. Vous pouvez rechercher par titre, auteur, genre ou ISBN.</p>
+                
+                <h3>Comment filtrer les résultats?</h3>
+                <p>Après une recherche, utilisez les options de filtre dans la barre latérale pour affiner vos résultats par genre, date de publication, disponibilité, etc.</p>
+            </div>
+        </div>
+        
+        <div class="aide-section">
+            <h2><i class="fas fa-question-circle"></i> FAQ</h2>
+            <div class="aide-content">
+                <h3>Combien de temps puis-je garder un livre?</h3>
+                <p>La période d'emprunt standard est de 14 jours. Vous pouvez prolonger cette période une fois pour 7 jours supplémentaires si le livre n'est pas réservé par un autre utilisateur.</p>
+                
+                <h3>Y a-t-il des frais de retard?</h3>
+                <p>Oui, des frais de 0,50€ par jour de retard sont appliqués pour chaque livre non retourné à temps.</p>
+                
+                <h3>Comment suggérer un livre à ajouter à la bibliothèque?</h3>
+                <p>Utilisez le formulaire "Suggérer un livre" disponible dans votre espace personnel ou contactez-nous directement.</p>
+            </div>
+        </div>
+        
+        <div class="aide-section">
+            <h2><i class="fas fa-envelope"></i> Contactez-nous</h2>
+            <div class="aide-content">
+                <p>Vous n'avez pas trouvé la réponse à votre question? N'hésitez pas à nous contacter:</p>
+                <ul class="contact-info">
+                    <li><i class="fas fa-envelope"></i> Email: support@zakbooks.com</li>
+                    <li><i class="fas fa-phone"></i> Téléphone: +33 1 23 45 67 89</li>
+                    <li><i class="fas fa-clock"></i> Horaires: Lun-Ven, 9h-18h</li>
+                </ul>
+                
+                <div class="contact-form">
+                    <h3>Formulaire de contact</h3>
+                    <form>
+                        <div class="form-group">
+                            <label for="name">Nom</label>
+                            <input type="text" id="name" name="name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="subject">Sujet</label>
+                            <input type="text" id="subject" name="subject" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="message">Message</label>
+                            <textarea id="message" name="message" rows="5" required></textarea>
+                        </div>
+                        <button type="submit" class="submit-btn">Envoyer</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

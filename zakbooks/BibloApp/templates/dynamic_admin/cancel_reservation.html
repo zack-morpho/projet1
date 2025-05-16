@@ -1,0 +1,73 @@
+{% extends "dynamic_admin/base_admin.html" %}
+
+{% block title %}Annuler une Réservation - ZakBooks{% endblock %}
+
+{% block content %}
+<div class="content-container">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="page-title">
+            <i class="bi bi-bookmark"></i> Annuler une Réservation
+        </h1>
+    </div>
+    
+    <div class="card mb-4">
+        <div class="card-header bg-primary text-white">
+            <h5 class="mb-0">Détails de la Réservation</h5>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <p><strong>ID:</strong> {{ reservation.id }}</p>
+                    <p><strong>Livre:</strong> {{ reservation.livre.titre }}</p>
+                    <p><strong>ISBN:</strong> {{ reservation.livre.isbn }}</p>
+                    <p><strong>Date de réservation:</strong> {{ reservation.dateReservation }}</p>
+                </div>
+                <div class="col-md-6">
+                    <p><strong>Utilisateur:</strong> {{ reservation.utilisateur.prenom }} {{ reservation.utilisateur.nom }}</p>
+                    <p><strong>Email:</strong> {{ reservation.utilisateur.email }}</p>
+                    <p><strong>Date de retour prévue:</strong> {{ reservation.dateRetour|default:"Non spécifiée" }}</p>
+                    <p><strong>Statut:</strong> 
+                        {% if reservation.estEffectuee %}
+                            <span class="badge bg-success">Complétée</span>
+                        {% elif reservation.estAnnulee %}
+                            <span class="badge bg-secondary">Annulée</span>
+                        {% else %}
+                            <span class="badge bg-warning text-dark">En attente</span>
+                        {% endif %}
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="card mb-4">
+        <div class="card-header bg-warning">
+            <h5 class="mb-0">Annulation de la Réservation</h5>
+        </div>
+        <div class="card-body">
+            <div class="alert alert-warning">
+                <i class="bi bi-exclamation-triangle me-2"></i>
+                <strong>Attention:</strong> Cette action est irréversible. Un message sera envoyé à l'utilisateur pour l'informer de l'annulation.
+            </div>
+            
+            <form method="post" action="">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label for="raison" class="form-label">Raison de l'annulation</label>
+                    <textarea id="raison" name="raison" class="form-control" rows="3" required></textarea>
+                    <div class="form-text">Cette raison sera incluse dans le message envoyé à l'utilisateur.</div>
+                </div>
+                
+                <div class="d-flex justify-content-between">
+                    <a href="{% url 'dynamic_admin_object_list' 'Reservation' %}" class="btn btn-secondary">
+                        <i class="bi bi-arrow-left"></i> Retour à la liste
+                    </a>
+                    <button type="submit" class="btn btn-danger">
+                        <i class="bi bi-x-circle"></i> Confirmer l'annulation
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

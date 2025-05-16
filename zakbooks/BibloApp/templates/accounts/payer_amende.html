@@ -1,0 +1,143 @@
+{% extends "accounts/account_base.html" %}
+
+{% block title %}Payer une Amende - ZakBooks{% endblock %}
+
+{% block account_content %}
+<div class="content-section">
+    <div class="section-header">
+        <h2><i class="fas fa-money-bill"></i> Payer une Amende</h2>
+    </div>
+    
+    <div class="payment-details">
+        <h3>Détails de l'amende</h3>
+        <div class="detail-row">
+            <div class="detail-label">Numéro:</div>
+            <div class="detail-value">#{{ amende.id }}</div>
+        </div>
+        {% if amende.emprunt %}
+        <div class="detail-row">
+            <div class="detail-label">Livre:</div>
+            <div class="detail-value">{{ amende.emprunt.livre.titre }}</div>
+        </div>
+        {% endif %}
+        <div class="detail-row">
+            <div class="detail-label">Raison:</div>
+            <div class="detail-value">{{ amende.raison }}</div>
+        </div>
+        <div class="detail-row">
+            <div class="detail-label">Date:</div>
+            <div class="detail-value">{{ amende.dateAmende }}</div>
+        </div>
+        <div class="detail-row total">
+            <div class="detail-label">Montant à payer:</div>
+            <div class="detail-value">{{ amende.montant }} DH</div>
+        </div>
+    </div>
+    
+    <form method="post" action="{% url 'pay-fine' amende.id %}" class="payment-form">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="payment_method">Méthode de paiement</label>
+            <select id="payment_method" name="payment_method" required>
+                <option value="">Sélectionner une méthode de paiement</option>
+                <option value="carte">Carte bancaire</option>
+                <option value="paypal">PayPal</option>
+                <option value="especes">Espèces (à la bibliothèque)</option>
+            </select>
+        </div>
+        
+        <div id="card-payment" class="payment-method-details" style="display: none;">
+            <div class="form-group">
+                <label for="card_number">Numéro de carte</label>
+                <input type="text" id="card_number" placeholder="1234 5678 9012 3456" maxlength="19">
+            </div>
+            <div class="form-row">
+                <div class="form-group half">
+                    <label for="expiry_date">Date d'expiration</label>
+                    <input type="text" id="expiry_date" placeholder="MM/AA" maxlength="5">
+                </div>
+                <div class="form-group half">
+                    <label for="cvv">CVV</label>
+                    <input type="text" id="cvv" placeholder="123" maxlength="3">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="card_name">Nom sur la carte</label>
+                <input type="text" id="card_name" placeholder="Prénom Nom">
+            </div>
+        </div>
+        
+        <div id="paypal-payment" class="payment-method-details" style="display: none;">
+            <p>Vous serez redirigé vers PayPal pour compléter votre paiement.</p>
+        </div>
+        
+        <div id="cash-payment" class="payment-method-details" style="display: none;">
+            <p>Veuillez vous présenter à l'accueil de la bibliothèque avec le numéro de l'amende (#{{ amende.id }}) pour effectuer votre paiement en espèces.</p>
+        </div>
+        
+        <div class="form-actions">
+            <a href="{% url 'user-amendes' %}" class="btn-secondary">Annuler</a>
+            <button type="submit" class="btn-primary">Payer {{ amende.montant }} DH</button>
+        </div>
+    </form>
+</div>
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const paymentMethodSelect = document.getElementById('payment_method');
+        const cardPayment = document.getElementById('card-payment');
+        const paypalPayment = document.getElementById('paypal-payment');
+        const cashPayment = document.getElementById('cash-payment');
+        
+        paymentMethodSelect.addEventListener('change', function() {
+            // Hide all payment method details
+            cardPayment.style.display = 'none';
+            paypalPayment.style.display = 'none';
+            cashPayment.style.display = 'none';
+            
+            // Show the selected payment method details
+            if (this.value === 'carte') {
+                cardPayment.style.display = 'block';
+            } else if (this.value === 'paypal') {
+                paypalPayment.style.display = 'block';
+            } else if (this.value === 'especes') {
+                cashPayment.style.display = 'block';
+            }
+        });
+        
+        // Format card number with spaces
+        const cardNumberInput = document.getElementById('card_number');
+        if (cardNumberInput) {
+            cardNumberInput.addEventListener('input', function(e) {
+                let value = e.target.value.replace(/\s+/g, '').replace(/[^0-9]/gi, '');
+                let formattedValue = '';
+                
+                for (let i = 0; i < value.length; i++) {
+                    if (i > 0 && i % 4 === 0) {
+                        formattedValue += ' ';
+                    }
+                    formattedValue += value[i];
+                }
+                
+                e.target.value = formattedValue;
+            });
+        }
+        
+        // Format expiry date with slash
+        const expiryDateInput = document.getElementById('expiry_date');
+        if (expiryDateInput) {
+            expiryDateInput.addEventListener('input', function(e) {
+                let value = e.target.value.replace(/\D/g, '');
+                
+                if (value.length > 2) {
+                    value = value.substring(0, 2) + '/' + value.substring(2, 4);
+                }
+                
+                e.target.value = value;
+            });
+        }
+    });
+</script>
+{% endblock %}
+{% endblock %}

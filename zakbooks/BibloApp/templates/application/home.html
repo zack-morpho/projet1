@@ -1,0 +1,145 @@
+{% extends 'application/base.html' %}
+{% block home %}
+
+{% if messages %}
+  <ul class="messages">
+    {% for message in messages %}
+      <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+  </ul>
+{% endif %}
+
+{% load static %}
+<link rel="stylesheet" href="{% static 'application/CSS/home.css' %}">
+<link rel="stylesheet" href="{% static 'application/CSS/messages.css' %}">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=search" />
+
+<script>
+  window.addEventListener('DOMContentLoaded', function() {
+    setTimeout(function() {
+      const messages = document.querySelectorAll('.messages li');
+      messages.forEach(function(msg) {
+        msg.style.opacity = '0';
+        setTimeout(function() {
+          msg.style.display = 'none';
+        }, 400);
+      });
+    }, 3000);
+  });
+</script>
+
+
+
+<div class="parent">
+    <div class="div6">
+        <h1>ZAKBOOKS</h1>
+    </div>
+    <div class="div1">
+        <img src="{% static 'application/images/online-library.png' %}" alt="Image de livre 1">
+        <h5>Online Library</h5>
+        <p>Une bibliothèque en ligne pour découvrir des livres, des auteurs, des genres et des auteurs.</p>
+    </div>
+    <div class="div2">
+        <img src="{% static 'application/images/search.png' %}" alt="Image de livre 2">
+        <h5>Essayer la recherche en plein texte</h5>
+        <p>Rechercher des livres par titre, auteur, genre, etc.</p>
+    </div>
+    <div class="div3">
+        <img src="{% static 'application/images/bookcase.png' %}" alt="Image de livre 3">
+        <h5>L'explorateur de bibliothèque virtuelle</h5>
+        <p>Des livres organisés comme dans une bibliothèque</p>
+    </div>
+    <div class="div4">
+        <img src="{% static 'application/images/agenda.png' %}" alt="Image de livre 4">
+        <h5>Reserver un livre</h5>
+        <p>Reserver un livre pour un emprunt</p>
+    </div>
+    <div class="div5">
+        <img src="{% static 'application/images/online-education.gif' %}" alt="Image de livre 5">
+        <p>Z</p>
+        <p>A</p>
+        <p>K</p>
+        <p>B</p>
+        <p>O</p>
+        <p>O</p>
+        <p>K</p>
+        <p>S</p>
+    </div>
+</div>
+    
+
+
+<div class="container">
+
+            <h3>Quelques livres que tu pourrais aimer :</h3>
+
+            <div class="book-list">
+                {% for book in books %}
+                    <a href="{% url 'book_detail' book.isbn %}" style="text-decoration:none;">
+                        <div class="book-item">
+                            <img src="{{ book.imageUrl }}" alt="Image de {{ book.titre }}" class="book-image">
+                            <span class="book-title">{{ book.titre }}</span><br>
+                            {% if book.nbExemplaires > 0 %}
+                                <span class="book-status disponible">Disponible</span><br>
+                                <a class="detail-button" href="{% url 'emprunter_livre' book.isbn %}">Emprunter</a>
+                            {% else %}
+                                <span class="book-status indisponible">Indisponible</span><br>
+                                {% if book.is_reserved_by_user %}
+                                    <button class="detail-button" disabled style="background-color: #ccc; cursor: not-allowed;">Déjà réservé</button>
+                                {% else %}
+                                    <a class="detail-button" href="{% url 'reserver_livre' book.isbn %}">Réserver</a>
+                                {% endif %}
+                            {% endif %}
+                        </div>
+                    </a>
+                {% empty %}
+                    <li class="empty">Aucun livre disponible pour le moment.</li>
+                {% endfor %}
+            </div>
+    </div>
+
+<footer class="footer">
+    <div class="footer-container">
+        <div class="footer-section about">
+            <h4>À propos de ZAKBOOKS</h4>
+            <p>ZAKBOOKS est une plateforme de bibliothèque numérique dédiée à rendre la lecture accessible à tous. Notre mission est de promouvoir la connaissance et la littérature.</p>
+        </div>
+        
+        <div class="footer-section links">
+            <h4>Liens rapides</h4>
+            <ul>
+                <li><a href="{% url 'home' %}">Accueil</a></li>
+                <li><a href="#">À propos</a></li>
+                <li><a href="#">Nouveautés</a></li>
+                <li><a href="#">Conditions d'utilisation</a></li>
+            </ul>
+        </div>
+        
+        <div class="footer-section contact">
+            <h4>Contactez-nous</h4>
+            <p><i class="footer-icon location"></i> 123 Rue des Livres, 75000 Casablanca</p>
+            <p><i class="footer-icon phone"></i> +212 6 23 45 67 89</p>
+            <p><i class="footer-icon email"></i> zakbooks@gmail.com</p>
+        </div>
+        
+        <div class="footer-section social">
+            <h4>Suivez-nous</h4>
+            <div class="social-icons">
+                <a href="#" class="social-icon facebook" aria-label="Facebook"></a>
+                <a href="#" class="social-icon twitter" aria-label="Twitter"></a>
+                <a href="#" class="social-icon instagram" aria-label="Instagram"></a>
+                <a href="#" class="social-icon linkedin" aria-label="LinkedIn"></a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="footer-bottom">
+        <p>&copy; {% now "Y" %} ZAKBOOKS. Tous droits réservés.</p>
+        <p>Conçu avec <span class="heart">❤</span> par l'équipe ZAKBOOKS</p>
+    </div>
+</footer>
+
+{% endblock %}
+
+
+{% comment %} <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script> {% endcomment %}

@@ -1,0 +1,226 @@
+
+.aide-container {
+    background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(232,201,153,0.2));
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    padding: 20px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #333;
+}
+
+.aide-title {
+    text-align: center;
+    color: #E8C999;
+    margin-bottom: 30px;
+    font-size: 2.5rem;
+    font-weight: 700;
+    position: relative;
+}
+
+.aide-title:after {
+    content: '';
+    display: block;
+    width: 100px;
+    height: 3px;
+    background: #E8C999;
+    margin: 20px auto;
+}
+
+.aide-search {
+    display: flex;
+    margin-bottom: 40px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 50px;
+    overflow: hidden;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#aide-search-input {
+    flex: 1;
+    padding: 15px 20px;
+    border: none;
+    outline: none;
+    font-size: 16px;
+}
+
+.search-btn {
+    background: #E8C999;
+    color: white;
+    border: none;
+    padding: 15px 25px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.search-btn:hover {
+    background: #2980b9;
+}
+
+.aide-sections {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 30px;
+}
+
+.aide-section {
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.aide-section:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.aide-section h2 {
+    background: #E8C999;
+    color: white;
+    padding: 20px 25px;
+    margin: 0;
+    font-size: 1.4rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    transition: background 0.3s ease;
+}
+
+.aide-section h2 i {
+    margin-right: 10px;
+    font-size: 1.2em;
+}
+
+.aide-section h2:hover {
+    background: #2980b9;
+}
+
+.aide-content {
+    padding: 20px 25px;
+}
+
+.aide-content h3 {
+    color: #E8C999;
+    font-size: 1.2rem;
+    margin-top: 25px;
+    margin-bottom: 10px;
+    border-bottom: 2px solid #ecf0f1;
+    padding-bottom: 8px;
+}
+
+.aide-content h3:first-child {
+    margin-top: 0;
+}
+
+.aide-content p {
+    line-height: 1.6;
+    color: #555;
+    margin-bottom: 15px;
+}
+
+.contact-info {
+    list-style: none;
+    padding: 0;
+    margin: 20px 0;
+}
+
+.contact-info li {
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+}
+
+.contact-info li i {
+    margin-right: 10px;
+    color: #3498db;
+    width: 20px;
+    text-align: center;
+}
+
+.contact-form {
+    background: #f8f9fa;
+    padding: 25px;
+    border-radius: 8px;
+    margin-top: 25px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #E8C999;
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #e0e0e0;
+    border-radius: 5px;
+    font-size: 15px;
+    transition: border 0.3s ease;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+    border-color: #3498db;
+    outline: none;
+}
+
+.submit-btn {
+    background: #E8C999;
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 600;
+    transition: background 0.3s ease;
+}
+
+.submit-btn:hover {
+    background: #E8C999;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .aide-container {
+        padding: 15px;
+        margin: 20px auto;
+    }
+    
+    .aide-title {
+        font-size: 2rem;
+    }
+    
+    .aide-section h2 {
+        font-size: 1.2rem;
+    }
+    
+    .aide-content h3 {
+        font-size: 1.1rem;
+    }
+    
+    .contact-form {
+        padding: 15px;
+    }
+}
+
+@media (min-width: 992px) {
+    .aide-sections {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    /* Make "Contact Us" section full width */
+    .aide-section:last-child {
+        grid-column: span 2;
+    }
+}

@@ -1,0 +1,35 @@
+{% extends 'application/base.html' %}
+{% load static %}
+
+{% block home %}
+
+<link rel="stylesheet" href="{% static 'application/CSS/livres_par_categorie.css' %}">
+<div class="container">
+    <h2 class="category-title">Livres dans la catégorie : {{ categorie_nom }}</h2>
+    <div class="book-list">
+        {% for livre in livres %}
+        <div class="book-item">
+            <div class="book-image-container">
+                <a href="{% url 'book_detail' livre.isbn %}">
+                    <img src="{{ livre.imageUrl }}" alt="Image de {{ livre.titre }}" class="book-image">
+                </a>
+            </div>
+            <div class="book-content">
+                <a href="{% url 'book_detail' livre.isbn %}" class="title-link">
+                    <h3 class="book-title">{{ livre.titre }}</h3>
+                </a>
+                <p class="book-author">{{ livre.auteur }}</p>
+                {% if livre.nbExemplaires > 0 %}
+                <span class="book-status disponible">Disponible</span>
+                <a href="{% url 'book_detail' livre.isbn %}" class="detail-button">Voir les détails</a>
+                {% else %}
+                <span class="book-status indisponible">Indisponible</span>
+                {% endif %}
+            </div>
+        </div>
+        {% empty %}
+        <div class="empty-message">Aucun livre trouvé pour cette catégorie.</div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

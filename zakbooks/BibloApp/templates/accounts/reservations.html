@@ -1,0 +1,48 @@
+{% extends "accounts/account_base.html" %}
+
+{% block title %}Mes Réservations - ZakBooks{% endblock %}
+
+{% block account_content %}
+<div class="content-section">
+    <div class="section-header">
+        <h2><i class="fas fa-bookmark"></i> Mes Réservations</h2>
+        <div class="filter-options">
+            <a href="{% url 'user-reservations' %}" class="filter-link {% if not request.GET.status %}active{% endif %}">Toutes</a>
+            <a href="{% url 'user-reservations' %}?status=active" class="filter-link {% if request.GET.status == 'active' %}active{% endif %}">En attente</a>
+            <a href="{% url 'user-reservations' %}?status=completed" class="filter-link {% if request.GET.status == 'completed' %}active{% endif %}">Complétées</a>
+            <a href="{% url 'user-reservations' %}?status=cancelled" class="filter-link {% if request.GET.status == 'cancelled' %}active{% endif %}">Annulées</a>
+        </div>
+    </div>
+    
+    {% if reservations %}
+    <div class="item-list">
+        {% for reservation in reservations %}
+        <div class="item-card">
+            <div class="item-title">{{ reservation.livre.titre }}</div>
+            <div class="item-info"><strong>Auteur:</strong> {{ reservation.livre.auteur }}</div>
+            <div class="item-info"><strong>Réservé le:</strong> {{ reservation.dateReservation }}</div>
+            {% if reservation.dateRetour %}
+            <div class="item-info"><strong>Date de retour prévue:</strong> {{ reservation.dateRetour }}</div>
+            {% endif %}
+            {% if reservation.estEffectuee %}
+            <span class="status completed">Complétée</span>
+            {% elif reservation.estAnnulee %}
+            <span class="status cancelled">Annulée</span>
+            {% else %}
+            <span class="status pending">En attente</span>
+            <div class="item-actions">
+                <a href="{% url 'Annule_reservation' reservation.id %}" class="btn-cancel">Annuler</a>
+            </div>
+            {% endif %}
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="empty-state">
+        <i class="fas fa-bookmark empty-icon"></i>
+        <p>Vous n'avez aucune réservation{% if request.GET.status %} dans cette catégorie{% endif %}.</p>
+        <a href="{% url 'home' %}" class="btn-primary">Parcourir les livres</a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

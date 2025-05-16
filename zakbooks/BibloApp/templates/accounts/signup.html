@@ -1,0 +1,26 @@
+{% load static %}  
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="{% static 'application\CSS\signup.css' %}">
+    <script src="{% static 'application/js/login.js' %}" defer></script>
+</head>
+
+
+
+<body> 
+    <h1>Sign Up</h1>
+    <p>Welcome to Biblo! Please fill in the details below to create an account.</p>
+    <form method="POST">
+       
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Sign Up</button>
+        <p>Already have an account? <a href="{% url 'login' %}">Login</a></p>
+
+    </form>
+<body>

@@ -1,0 +1,60 @@
+{% extends "accounts/account_base.html" %}
+
+{% block title %}Mes Amendes - ZakBooks{% endblock %}
+
+{% block account_content %}
+<div class="content-section">
+    <div class="section-header">
+        <h2><i class="fas fa-money-bill"></i> Mes Amendes</h2>
+        <div class="filter-options">
+            <a href="{% url 'user-amendes' %}" class="filter-link {% if not request.GET.status %}active{% endif %}">Toutes</a>
+            <a href="{% url 'user-amendes' %}?status=unpaid" class="filter-link {% if request.GET.status == 'unpaid' %}active{% endif %}">Non payées</a>
+            <a href="{% url 'user-amendes' %}?status=paid" class="filter-link {% if request.GET.status == 'paid' %}active{% endif %}">Payées</a>
+        </div>
+    </div>
+    
+    {% if total_unpaid > 0 %}
+    <div class="alert alert-warning">
+        <i class="fas fa-exclamation-triangle"></i>
+        <p>Vous avez {{ total_unpaid }} DH d'amendes non payées.</p>
+    </div>
+    {% endif %}
+    
+    {% if amendes %}
+    <div class="item-list">
+        {% for amende in amendes %}
+        <div class="item-card">
+            <div class="item-header">
+                <div class="item-title">Amende #{{ amende.id }}</div>
+                {% if amende.estPayee %}
+                <span class="status completed">Payée</span>
+                {% else %}
+                <span class="status unpaid">Non payée</span>
+                {% endif %}
+            </div>
+            {% if amende.emprunt %}
+            <div class="item-info"><strong>Livre:</strong> {{ amende.emprunt.livre.titre }}</div>
+            {% endif %}
+            <div class="item-details">
+                <div class="item-info"><strong>Montant:</strong> {{ amende.montant }} DH</div>
+                <div class="item-info"><strong>Raison:</strong> {{ amende.raison }}</div>
+                <div class="item-info"><strong>Date:</strong> {{ amende.dateAmende }}</div>
+                {% if amende.estPayee %}
+                <div class="item-info"><strong>Payée le:</strong> {{ amende.datePaiement }}</div>
+                {% else %}
+                <div class="item-actions">
+                    <a href="{% url 'pay-fine' amende.id %}" class="btn-secondary">Payer maintenant</a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="empty-state">
+        <i class="fas fa-money-bill empty-icon"></i>
+        <p>Vous n'avez aucune amende{% if request.GET.status %} dans cette catégorie{% endif %}.</p>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

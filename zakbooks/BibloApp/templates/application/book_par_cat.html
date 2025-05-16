@@ -1,0 +1,53 @@
+{% extends 'application/base.html' %}
+{% load static %}
+
+{% block title %}Tous les livres par catégorie - ZakBooks{% endblock %}
+
+{% block home %}
+
+<link rel="stylesheet" href="{% static 'application/CSS/books_par_cat.css' %}">
+
+<div class="header">
+    <h1>Tous les livres par catégorie</h1>
+    <p>Découvrez notre collection de livres organisés par catégorie.</p>
+</div>
+
+
+<div class="container">
+    <h1 class="mb-4 text-center">Tous les livres par catégorie</h1>
+    
+    {% for category_name, books in books_by_category.items %}
+        <div class="category-section">
+            <h2>{{ category_name }}</h2>
+            <div class="row">
+                {% for book in books %}
+                <a href="{% url 'book_detail' book.isbn %}" style="text-decoration:none;">
+                    <div class="book-item">
+                        <img src="{{ book.imageUrl }}" alt="Image de {{ book.titre }}" class="book-image">
+                        <span class="book-title">{{ book.titre }}</span><br>
+                        <span class="book-author">{{ book.auteur }}</span><br>
+                        {% if book.nbExemplaires > 0 %}
+                            <span class="book-status disponible">Disponible</span><br>
+                            <a class="detail-button" href="{% url 'emprunter_livre' book.isbn %}">Emprunter</a>
+                        {% else %}
+                            <span class="book-status indisponible">Indisponible</span><br>
+                            {% if book.is_reserved_by_user %}
+                                <button class="detail-button" disabled style="background-color: #ccc; cursor: not-allowed;">Déjà réservé</button>
+                            {% else %}
+                                <a class="detail-button" href="{% url 'reserver_livre' book.isbn %}">Réserver</a>
+                            {% endif %}
+                        {% endif %}
+                    </div>
+                </a>
+                {% empty %}
+                <li class="empty">Aucun livre disponible pour le moment.</li>
+                {% endfor %}
+            </div>
+        </div>
+    {% empty %}
+        <div class="alert-info">
+            Aucun livre disponible pour le moment.
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}

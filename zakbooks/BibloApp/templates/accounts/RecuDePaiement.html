@@ -1,0 +1,50 @@
+{% extends "accounts/account_base.html" %}
+
+{% block title %}Reçus de Paiement - ZakBooks{% endblock %}
+
+{% block account_content %}
+<div class="content-header">
+    <h1>Mes Reçus de Paiement</h1>
+    <p>Consultez et téléchargez vos reçus de paiement</p>
+</div>
+
+<div class="content-section payment-section">
+    <div class="section-header">
+        <h2><i class="fas fa-file-invoice-dollar"></i> Reçus de paiement</h2>
+    </div>
+    
+    {% if payments %}
+    <div class="item-list">
+        {% for payment in payments %}
+        <div class="item-card receipt-card">
+            <div class="receipt-header">
+                <div class="receipt-logo">ZakBooks</div>
+                <div class="receipt-number">Reçu #{{ payment.id }}</div>
+            </div>
+            <div class="receipt-details">
+                <div class="item-title">{{ payment.livre.titre }}</div>
+                <div class="item-info"><strong>Client:</strong> {{ payment.utilisateur.prenom }} {{ payment.utilisateur.nom }}</div>
+                <div class="item-info"><strong>Type de transaction:</strong> {{ payment.transaction_type }}</div>
+                <div class="item-info"><strong>Date:</strong> {{ payment.created_at|date:"d/m/Y H:i" }}</div>
+                <div class="item-info"><strong>Méthode de paiement:</strong> {{ payment.payment_method }}</div>
+                <div class="item-info"><strong>Montant payé:</strong> {{ payment.prix }} DH</div>
+            </div>
+            <div class="receipt-footer">
+                <div class="receipt-status">Payé</div>
+                <div class="receipt-actions">
+                    <a href="{% url 'download_receipt' payment.id %}" class="btn-primary download-receipt">
+                        <i class="fas fa-download"></i> Télécharger PDF
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="empty-state">
+        <i class="fas fa-file-invoice-dollar empty-icon"></i>
+        <p>Vous n'avez aucun reçu de paiement.</p>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

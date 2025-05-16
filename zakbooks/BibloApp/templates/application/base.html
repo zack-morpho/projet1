@@ -1,0 +1,100 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}ZakBooks{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'application/css/base.css' %}">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=search" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+<body>
+
+    <header>
+        <div class="logo-container">
+            <a href="{% url 'home' %}" style="text-decoration:none;">
+              <h1 class="logo">ZAKBOOKS</h1>  
+            </a>
+            <form action="{% url 'search' %}" method="get" class="search-form">
+                <input type="text" name="query" placeholder="Search books..." class="search-input">
+                <button type="submit"class="material-symbols-outlined">search</button>
+            </form> 
+
+            <div class="connect_user dropdown">
+                <span class="dropdown-btn">
+                    <span class="material-icons">account_circle</span>
+                    {% if request.session.connected_user %}
+                        <span class="user-name">{{ request.session.connected_user.prenom }} {{ request.session.connected_user.nom }}</span>
+                    {% else %}
+                        <span class="user-name">Guest</span>
+                    {% endif %}
+                </span>
+                <div class="dropdown-content">
+                    
+                    {% if request.session.connected_user %}
+                        {% if request.session.role == 'ADMIN' %}
+                            <a href="{% url 'dynamic_admin_model_list' %}">Admin Dashboard</a>
+                        {% elif request.session.role == 'USER' %}
+                            <a href="{% url 'mon-compte' %}">Mon Compte</a>
+                        {% endif %}
+                        <form action="{% url 'logout' %}" method="post" class="logout-form">
+                            {% csrf_token %}
+                            <button type="submit" class="logout-btn">
+                                <span class="material-icons">logout</span> Déconnexion
+                            </button>
+                        </form>
+                    {% else %}
+                        <a href="{% url 'login' %}">Connexion</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <nav>
+            <a href="{% url 'home' %}">Home</a>
+            <div class="dropdown">
+                <a class="dropdown-btn">Catégories</a>
+                <div class="dropdown-content">
+                    {% for key, value in categories %}
+                        <a href="{% url 'livres_par_categorie' key %}">{{ value }}</a>
+                    {% endfor %}
+                </div>
+            </div>
+            <a href="#about">about</a>
+            <a href="">Contact</a>
+            <a href="{% url 'aide' %}">Aide</a>
+            <a href="{% url 'book_par_cat' 'ALL' %}">Nos livres</a>
+        </nav>
+    </header>
+
+    
+        {% block home %}
+        {% endblock %}
+
+        {% block search_result %}
+        {% endblock %}
+
+        {% block book_detail %}
+        {% endblock %}
+
+        {% block content %}
+        {% endblock %}
+
+
+
+
+
+
+    
+</body>
+</html>
+
+
+
+
+
+
+
+
