@@ -11,9 +11,6 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from pathlib import Path
-import pymysql
-pymysql.install_as_MySQLdb()
-
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -101,7 +98,11 @@ CSRF_TRUSTED_ORIGINS = [
     'https://projet1-production-e398.up.railway.app',
 ]
 
-
+try:
+    import pymysql
+    pymysql.install_as_MySQLdb()
+except ImportError:
+    pass  # mysql-connector-python will be used instead
 
 
 
