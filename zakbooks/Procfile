@@ -1,1 +1,1 @@
-web: gunicorn PFA2.wsgi
+web: gunicorn zakbooks.wsgi
