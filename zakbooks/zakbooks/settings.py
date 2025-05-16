@@ -65,7 +65,7 @@ TEMPLATES = [
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [BASE_DIR / "templates",
                  BASE_DIR / "BibloApp" / "templates", 
-                 BASE_DIR / "static",
+                 BASE_DIR / "staticfiles" ,
                  ],
         
         'APP_DIRS': True,
@@ -80,10 +80,10 @@ TEMPLATES = [
     },
 ]
 
-STATIC_URL = '/static/'
+STATIC_URL = '/staticfiles/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATICFILES_DIRS = [
-    BASE_DIR / 'static',
+    BASE_DIR / 'staticfiles',
 ]
 
 MEDIA_URL = '/media/'
