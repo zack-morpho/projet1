@@ -24,7 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-ot6*my2x4g8bcpa-tt4yq!)dwp7%rudmb@k)&+0l#=sd3jqf&('
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = [
     'projet1-production-e398.up.railway.app',  # Domaine Railway
@@ -82,12 +82,13 @@ TEMPLATES = [
     },
 ]
 
-# Configuration des fichiers statiques
+# Static files configuration
 STATIC_URL = '/static/'
-STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATICFILES_DIRS = [
+    BASE_DIR / 'BibloApp' / 'static',
     BASE_DIR / 'static',
 ]
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 # Configuration Whitenoise
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
@@ -159,3 +160,6 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Force HTTPS in production
+SECURE_SSL_REDIRECT = not DEBUG
