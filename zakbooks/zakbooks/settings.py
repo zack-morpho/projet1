@@ -24,7 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-ot6*my2x4g8bcpa-tt4yq!)dwp7%rudmb@k)&+0l#=sd3jqf&('
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = [
     'projet1-production-e398.up.railway.app',  # Domaine Railway
@@ -48,7 +48,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',  # Doit être juste après SecurityMiddleware
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -62,14 +62,17 @@ ROOT_URLCONF = 'zakbooks.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / "templates",
-                 BASE_DIR / "BibloApp" / "templates", 
-                 BASE_DIR / "staticfiles" ,
-                 ],
+        'DIRS': [
+            BASE_DIR / "templates",
+            BASE_DIR / "BibloApp" / "templates",
+            BASE_DIR / "static",  # Changé de 'staticfiles' à 'static'
+        ],
         
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
+                'django.template.context_processors.debug',  # Ajouté
+                'django.template.context_processors.static',  # Ajouté
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
@@ -87,7 +90,7 @@ STATICFILES_DIRS = [
 ]
 
 # Configuration Whitenoise
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
@@ -96,9 +99,6 @@ WSGI_APPLICATION = 'zakbooks.wsgi.application'
 
 LOGIN_URL = '/login/'
 LOGOUT_REDIRECT_URL = '/login/'
-
-MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'
 
 CSRF_TRUSTED_ORIGINS = [
     'https://projet1-production-e398.up.railway.app',
