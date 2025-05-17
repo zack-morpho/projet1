@@ -28,17 +28,12 @@ SECRET_KEY = 'django-insecure-ot6*my2x4g8bcpa-tt4yq!)dwp7%rudmb@k)&+0l#=sd3jqf&(
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = [
-    'projet1-production-e398.up.railway.app',  # Domaine Railway
-    '127.0.0.1',
-    'localhost'
-]
+ALLOWED_HOSTS = []
 
 
 # Application definition
 
 INSTALLED_APPS = [
-
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -80,9 +75,8 @@ TEMPLATES = [
     },
 ]
 
-
-MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'
+STATIC_URL = '/static/'
+STATICFILES_DIRS = [BASE_DIR / "static"]
 
 WSGI_APPLICATION = 'zakbooks.wsgi.application'
 
@@ -91,8 +85,6 @@ LOGOUT_REDIRECT_URL = '/login/'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
-
-
 
 
 
