@@ -1,0 +1,51 @@
+{% extends "application/base.html" %}
+{% load static %}
+{% block search_result %}
+
+<link rel="stylesheet" href="{% static 'application/CSS/search_result.css' %}">
+
+<div class="search-results">
+    <h2>Search Results for "{{ query }}"</h2>
+    
+    {% if result %}
+    <div class="book-result-container">
+        <div class="book-result-image">
+            <img src="{{ result.imageUrl }}" alt="Image de {{ result.titre }}" class="book-image">
+        </div>
+        <div class="book-result">
+            <h3>{{ result.titre }}</h3>
+            <p><strong>Category:</strong> {{ result.categorie }}</p>
+            <p><strong>Publication Date:</strong> {{ result.datePublication }}</p>
+            <p><strong>Author:</strong> {{ result.auteur }}</p>
+            <p><strong>ISBN:</strong> {{ result.isbn }}</p>
+            <p><strong>Description:</strong> {{ result.description }}</p>
+            {% if result.estDisponible %}
+                <p class="book-status disponible">Available</p>
+            {% else %}
+                <p class="book-status indisponible">Unavailable</p>
+            {% endif %}
+            <button class="reserve-button">Reserve</button>
+        </div>
+    </div>
+
+    <div class="comments-section">
+        <h3 class="comments-title">Commentaires</h3>
+        <ul class="comment-list">
+            {% for comment in comments %}
+                <li class="comment-item">
+                    <div class="comment-header">
+                        <strong class="comment-user">{{ comment.user.username }}</strong>
+                        <span class="comment-date">{{ comment.date_posted }}</span>
+                    </div>
+                    <div class="comment-text">{{ comment.text }}</div>
+                </li>
+            {% empty %}
+                <div class="empty">No comments available.</div>
+            {% endfor %}
+        </ul>
+    </div>
+    {% else %}
+        <p>No results found for "{{ query }}".</p>
+    {% endif %}
+</div>
+{% endblock %}

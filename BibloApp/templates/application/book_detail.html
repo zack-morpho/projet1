@@ -1,0 +1,64 @@
+{% extends 'application/base.html' %}
+{% load static %}
+
+{% block book_detail %}
+
+<link rel="stylesheet" href="{% static 'application/CSS/book_detail.css' %}">
+
+<div class="book-detail">
+    <a href="{% url 'home' %}" class="detail-button1">← Retour</a>
+    <h2>{{ book.titre }}</h2>
+    <div class="book-info">
+        <div class="book-info-img">
+            <img src="{{ book.imageUrl }}" alt="Image de {{ book.titre }}" class="book-image">
+        </div>
+        <div class="book-info-details">
+            <p><strong>Auteur :</strong> {{ book.auteur }}</p>
+            <p><strong>Catégorie :</strong> {{ book.get_categorie_display }}</p>
+            <p><strong>ISBN :</strong> {{ book.isbn }}</p>
+            <p><strong>Date de publication :</strong> {{ book.datePublication }}</p>
+            <p><strong>Disponible :</strong>
+                {% if book.nbExemplaires > 0 %}
+                    <span class="disponible">Oui</span>
+                {% else %}
+                    <span class="indisponible">Non</span>
+                {% endif %}
+            </p>
+        </div>
+    </div>
+    <p><strong>Description :</strong><br> {{ book.description|default:"Pas de description disponible." }}</p>
+    <br>
+    {% if book.nbExemplaires > 0 %}
+        <a href="{% url 'emprunter_livre' book.isbn %}" class="detail-button">Emprunter</a>
+    {% else %}
+        {% if book.is_reserved_by_user %}
+            <span class="detail-button" style="background-color: #ccc; cursor: not-allowed; display: inline-block;">Déjà réservé</span>
+        {% else %}
+            <a class="detail-button" href="{% url 'reserver_livre' book.isbn %}">Réserver</a>
+        {% endif %}
+    {% endif %}
+    <br>
+</div>
+
+
+    <div class="comments-section">
+        <h3>Commentaires</h3>
+        <ul class="comment-list">
+            {% for commentaire in commentaires %}
+                <li class="comment-item">
+                    <p><strong>{{ commentaire.utilisateur.username }}:</strong> {{ commentaire.texte }}</p>
+                    <p>Note : {{ commentaire.note }}/5</p>
+                    <p><em>Posté le : {{ commentaire.created_at|date:"d/m/Y H:i" }}</em></p>
+                </li>
+            {% empty %}
+                <li class="empty">Aucun commentaire pour ce livre.</li>
+            {% endfor %}
+        </ul>
+        <h4>Ajouter un commentaire</h4>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="detail-button">Envoyer</button>
+        </form>
+    </div>
+{% endblock %}

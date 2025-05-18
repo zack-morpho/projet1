@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Mon Compte - ZakBooks{% endblock %}</title>
+    {% load static %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="{% static '/css/account_styles.css' %}" type="text/css">
+    <!-- Fallback styles si le CSS ne charge pas -->
+    <style>
+        .app-loader { display: none; }
+        .container { display: flex; }
+        .sidebar { width: 250px; }
+        .main-content { flex: 1; }
+    </style>
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <!-- App loader animation -->
+    <div class="app-loader" id="appLoader">
+        <div class="loader-spinner"></div>
+    </div>
+
+    <div class="container">
+        <!-- Sidebar -->
+        <div class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <h2><a href="{% url 'home' %}">ZakBooks</a></h2>
+            </div>
+            
+            <div class="user-info">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-name">{{ user.prenom }} {{ user.nom }}</div>
+                <div class="user-role">Membre</div>
+            </div>
+            
+            <div class="sidebar-menu">
+                <a href="{% url 'mon-compte' %}" class="menu-item {% if active_tab == 'profile' %}active{% endif %}">
+                    <i class="fas fa-user"></i> Mon Profil
+                </a>
+                
+                <a href="{% url 'user-reservations' %}" class="menu-item {% if active_tab == 'reservations' %}active{% endif %}">
+                    <i class="fas fa-bookmark"></i> Mes Réservations
+                </a>
+                <a href="{% url 'user-emprunts' %}" class="menu-item {% if active_tab == 'emprunts' %}active{% endif %}">
+                    <i class="fas fa-book"></i> Mes Emprunts
+                </a>
+                <a href="{% url 'user-amendes' %}" class="menu-item {% if active_tab == 'amendes' %}active{% endif %}">
+                    <i class="fas fa-money-bill"></i> Mes Amendes
+                </a>
+                <a href="{% url 'user-messages' %}" class="menu-item {% if active_tab == 'messages' %}active{% endif %}">
+                    <i class="fas fa-envelope"></i> Messages
+                    {% if unread_count %}<span class="badge">{{ unread_count }}</span>{% endif %}
+                </a>
+                <a href="{% url 'RecuDePaiement' %}" class="menu-item {% if active_tab == 'RecuDePaiement' %}active{% endif %}">
+                    <i class="fas fa-file-invoice-dollar"></i> Reçus de Paiement
+                </a>
+            </div>
+            
+            <div class="sidebar-footer">
+                <a href="{% url 'home' %}"><i class="fas fa-home"></i> Accueil</a> | 
+                <a href="{% url 'logout' %}"><i class="fas fa-sign-out-alt"></i> Déconnexion</a>
+            </div>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Mobile header with menu toggle -->
+            <div class="mobile-header">
+                <div class="menu-toggle" id="menuToggle">
+                    <i class="fas fa-bars"></i>
+                </div>
+                <div class="mobile-brand">ZakBooks</div>
+            </div>
+            
+            {% if messages %}
+                <div class="messages">
+                    {% for message in messages %}
+                        <div class="message {{ message.tags }}">
+                            <i class="fas fa-info-circle"></i>
+                            <div>{{ message }}</div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+            
+            {% block account_content %}{% endblock %}
+        </div>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // App loader
+            const appLoader = document.getElementById('appLoader');
+            if (appLoader) {
+                setTimeout(function() {
+                    appLoader.classList.add('fade-out');
+                    setTimeout(function() {
+                        appLoader.style.display = 'none';
+                    }, 500);
+                }, 800);
+            }
+            
+            // Mobile menu
+            const menuToggle = document.getElementById('menuToggle');
+            const sidebar = document.getElementById('sidebar');
+            
+            if (menuToggle) {
+                menuToggle.addEventListener('click', function() {
+                    sidebar.classList.toggle('open');
+                });
+            }
+            
+            // Close sidebar when clicking outside on mobile
+            document.addEventListener('click', function(event) {
+                const isClickInsideSidebar = sidebar.contains(event.target);
+                const isClickOnToggle = menuToggle.contains(event.target);
+                
+                if (!isClickInsideSidebar && !isClickOnToggle && window.innerWidth < 769) {
+                    sidebar.classList.remove('open');
+                }
+            });
+            
+            // Add touch swipe support for mobile
+            let touchStartX = 0;
+            let touchEndX = 0;
+            
+            document.addEventListener('touchstart', function(event) {
+                touchStartX = event.changedTouches[0].screenX;
+            }, false);
+            
+            document.addEventListener('touchend', function(event) {
+                touchEndX = event.changedTouches[0].screenX;
+                handleSwipe();
+            }, false);
+            
+            function handleSwipe() {
+                const SWIPE_THRESHOLD = 100;
+                
+                if (touchEndX - touchStartX > SWIPE_THRESHOLD && window.innerWidth < 769) {
+                    // Swiped right
+                    sidebar.classList.add('open');
+                }
+                
+                if (touchStartX - touchEndX > SWIPE_THRESHOLD && window.innerWidth < 769) {
+                    // Swiped left
+                    sidebar.classList.remove('open');
+                }
+            }
+        });
+    </script>
+    
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

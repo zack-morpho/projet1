@@ -1,0 +1,272 @@
+{% extends "dynamic_admin/base_admin.html" %}
+
+{% block title %}ZakBooks Admin - Rapports Statistiques{% endblock %}
+
+{% block content %}
+<div class="content-container">
+    <h1 class="page-title mb-4"><i class="bi bi-bar-chart-fill"></i> Rapports Statistiques</h1>
+    
+    <!-- Statistiques générales -->
+    <div class="card mb-4">
+        <div class="card-header">
+            <h5 class="mb-0"><i class="bi bi-graph-up"></i> Statistiques Générales</h5>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-3 mb-3">
+                    <div class="stats-mini-card">
+                        <div class="stats-mini-icon">
+                            <i class="bi bi-book"></i>
+                        </div>
+                        <div class="stats-mini-info">
+                            <h4>{{ total_books }}</h4>
+                            <span>Livres</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <div class="stats-mini-card">
+                        <div class="stats-mini-icon">
+                            <i class="bi bi-people"></i>
+                        </div>
+                        <div class="stats-mini-info">
+                            <h4>{{ total_users }}</h4>
+                            <span>Utilisateurs</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <div class="stats-mini-card">
+                        <div class="stats-mini-icon">
+                            <i class="bi bi-arrow-left-right"></i>
+                        </div>
+                        <div class="stats-mini-info">
+                            <h4>{{ total_active_loans }}</h4>
+                            <span>Emprunts actifs</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <div class="stats-mini-card">
+                        <div class="stats-mini-icon">
+                            <i class="bi bi-exclamation-triangle"></i>
+                        </div>
+                        <div class="stats-mini-info">
+                            <h4>{{ total_late_loans }}</h4>
+                            <span>Retards</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Activité récente -->
+    <div class="card mb-4">
+        <div class="card-header">
+            <h5 class="mb-0"><i class="bi bi-clock-history"></i> Activité des 30 derniers jours</h5>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <div class="stats-mini-card">
+                        <div class="stats-mini-icon">
+                            <i class="bi bi-box-arrow-in-right"></i>
+                        </div>
+                        <div class="stats-mini-info">
+                            <h4>{{ recent_loans }}</h4>
+                            <span>Nouveaux emprunts</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <div class="stats-mini-card">
+                        <div class="stats-mini-icon">
+                            <i class="bi bi-box-arrow-in-left"></i>
+                        </div>
+                        <div class="stats-mini-info">
+                            <h4>{{ recent_returns }}</h4>
+                            <span>Retours</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <div class="stats-mini-card">
+                        <div class="stats-mini-icon">
+                            <i class="bi bi-person-plus"></i>
+                        </div>
+                        <div class="stats-mini-info">
+                            <h4>{{ recent_registrations }}</h4>
+                            <span>Nouvelles inscriptions</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Livres les plus empruntés -->
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0"><i class="bi bi-star"></i> Livres les plus empruntés</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Titre</th>
+                                    <th>Auteur</th>
+                                    <th>Emprunts</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for livre in most_borrowed_books %}
+                                <tr>
+                                    <td>{{ livre.titre }}</td>
+                                    <td>{{ livre.auteur }}</td>
+                                    <td><span class="badge bg-primary">{{ livre.emprunts_count }}</span></td>
+                                </tr>
+                                {% empty %}
+                                <tr>
+                                    <td colspan="3" class="text-center">Aucun emprunt enregistré</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Catégories populaires -->
+        <div class="col-md-6">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0"><i class="bi bi-tags"></i> Catégories populaires</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Catégorie</th>
+                                    <th>Total Emprunts</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for cat in popular_categories %}
+                                <tr>
+                                    <td>{{ cat.categorie }}</td>
+                                    <td><span class="badge bg-success">{{ cat.total_emprunts }}</span></td>
+                                </tr>
+                                {% empty %}
+                                <tr>
+                                    <td colspan="2" class="text-center">Aucune donnée disponible</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Utilisateurs en retard -->
+    <div class="card mb-4">
+        <div class="card-header">
+            <h5 class="mb-0"><i class="bi bi-exclamation-circle"></i> Utilisateurs avec des emprunts en retard</h5>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Utilisateur</th>
+                            <th>Livre</th>
+                            <th>Date d'emprunt</th>
+                            <th>Date de retour prévue</th>
+                            <th>Jours de retard</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for emprunt in late_loans %}
+                        <tr>
+                            <td>{{ emprunt.utilisateur.prenom }} {{ emprunt.utilisateur.nom }}</td>
+                            <td>{{ emprunt.livre.titre }}</td>
+                            <td>{{ emprunt.dateEmprunt|date:"d/m/Y" }}</td>
+                            <td>{{ emprunt.dateRetourPrevue|date:"d/m/Y" }}</td>
+                            <td><span class="badge bg-danger">
+                                {% if emprunt.dateRetourPrevue %}
+                                    En retard de {{ emprunt.dateRetourPrevue|timesince }}
+                                {% else %}
+                                    Date inconnue
+                                {% endif %}
+                            </span></td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="5" class="text-center">Aucun emprunt en retard</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Actions -->
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <div class="d-flex justify-content-end">
+                <a href="{% url 'dynamic_admin_export_csv' 'Emprunt' %}" class="btn btn-primary me-2">
+                    <i class="bi bi-download"></i> Exporter les emprunts (CSV)
+                </a>
+                <a href="{% url 'dynamic_admin_export_csv' 'Amende' %}" class="btn btn-warning">
+                    <i class="bi bi-download"></i> Exporter les amendes (CSV)
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .stats-mini-card {
+        display: flex;
+        align-items: center;
+        padding: 15px;
+        border-radius: 8px;
+        background-color: #f8f9fa;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+    
+    .stats-mini-icon {
+        width: 50px;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #8E1616;
+        color: white;
+        border-radius: 8px;
+        margin-right: 15px;
+        font-size: 1.5rem;
+    }
+    
+    .stats-mini-info h4 {
+        margin: 0;
+        font-weight: bold;
+        font-size: 1.5rem;
+    }
+    
+    .stats-mini-info span {
+        color: #6c757d;
+        font-size: 0.9rem;
+    }
+</style>
+{% endblock %}

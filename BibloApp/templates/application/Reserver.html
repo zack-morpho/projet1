@@ -1,0 +1,60 @@
+{% extends 'application/base.html' %}
+{% load static %}
+
+{% block home %}
+<link rel="stylesheet" href="{% static 'application/CSS/Reserver.css' %}">
+<div class="container">
+    <h2>Réserver le livre : {{ livre.titre }}</h2>
+    <div class="book-info">
+        <img src="{{ livre.imageUrl }}" alt="Image de {{ livre.titre }}" class="book-image" style="max-width:120px;">
+        <div class="book-details">
+            <h3>{{ livre.titre }}</h3>
+            <p><strong>Auteur :</strong> {{ livre.auteur }}</p>
+            <p><strong>Catégorie :</strong> {{ livre.get_categorie_display }}</p>
+            <p><strong>Exemplaires disponibles :</strong> {{ livre.nbExemplaires }}</p>
+            <p><strong>Prochaine date de retour :</strong> 
+                {% if next_date %}
+                    {{ next_date|date:'d/m/Y' }}
+                {% else %}
+                    Non disponible
+                {% endif %}
+            </p>
+        </div>
+    </div>
+    <form method="post" action="{% url 'payer_reservation' livre.isbn %}">
+        {% csrf_token %}
+        <div class="date-retour">
+            <label for="dateRetour">Date de retour souhaitée</label>
+            <input type="date" id="dateRetour" name="dateRetour" required 
+                   {% if emprunt.dateRetour %}min="{{ emprunt.dateRetour|date:'Y-m-d' }}"{% endif %}
+                   onchange="validateReturnDate()">
+        </div>
+        <div class="mb-3">
+            <p>Montant à payer pour la réservation : {{ livre.prix }} dirhams</p>
+        </div>
+        <button type="submit" class="detail-button">Payer</button>
+        <a href="{% url 'book_detail' livre.isbn %}" class="detail-button1">Annuler</a>
+    </form>
+    <script>
+    function validateReturnDate() {
+        const dateInput = document.getElementById('dateRetour');
+        const startDate = dateInput.min ? new Date(dateInput.min) : new Date();
+        const returnDate = new Date(dateInput.value);
+        
+        if (returnDate < startDate) {
+            alert('La date de retour doit être après la date de disponibilité');
+            dateInput.value = '';
+            return;
+        }
+        
+        const maxDate = new Date(startDate);
+        maxDate.setDate(maxDate.getDate() + 30);
+        
+        if (returnDate > maxDate) {
+            alert('La durée de prêt ne peut pas dépasser 1 mois');
+            dateInput.value = '';
+        }
+    }
+    </script>
+</div>
+{% endblock %}

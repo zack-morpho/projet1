@@ -1,0 +1,44 @@
+{% extends "accounts/account_base.html" %}
+
+{% block title %}Mes Emprunts - ZakBooks{% endblock %}
+
+{% block account_content %}
+<div class="content-section">
+    <div class="section-header">
+        <h2><i class="fas fa-book"></i> Mes Emprunts</h2>
+        <div class="filter-options">
+            <a href="{% url 'user-emprunts' %}" class="filter-link {% if not request.GET.status %}active{% endif %}">Tous</a>
+            <a href="{% url 'user-emprunts' %}?status=current" class="filter-link {% if request.GET.status == 'current' %}active{% endif %}">En cours</a>
+            <a href="{% url 'user-emprunts' %}?status=returned" class="filter-link {% if request.GET.status == 'returned' %}active{% endif %}">Retournés</a>
+            <a href="{% url 'user-emprunts' %}?status=overdue" class="filter-link {% if request.GET.status == 'overdue' %}active{% endif %}">En retard</a>
+        </div>
+    </div>
+    
+    {% if emprunts %}
+    <div class="item-list">
+        {% for emprunt in emprunts %}
+        <div class="item-card {% if emprunt.is_overdue %}overdue{% endif %}">
+            <div class="item-title">{{ emprunt.livre.titre }}</div>
+            <div class="item-info"><strong>Auteur:</strong> {{ emprunt.livre.auteur }}</div>
+            <div class="item-info"><strong>Emprunté le:</strong> {{ emprunt.dateEmprunt }}</div>
+            <div class="item-info"><strong>À retourner avant le:</strong> {{ emprunt.dateRetourPrevue }}</div>
+            {% if emprunt.dateRetourEffective %}
+            <div class="item-info"><strong>Retourné le:</strong> {{ emprunt.dateRetourEffective }}</div>
+            <span class="status returned">Retourné</span>
+            {% elif emprunt.is_overdue %}
+            <span class="status overdue">En retard</span>
+            {% else %}
+            <span class="status borrowed">En cours</span>
+            {% endif %}
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="empty-state">
+        <i class="fas fa-book empty-icon"></i>
+        <p>Vous n'avez aucun emprunt{% if request.GET.status %} dans cette catégorie{% endif %}.</p>
+        <a href="{% url 'home' %}" class="btn-primary">Parcourir les livres</a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

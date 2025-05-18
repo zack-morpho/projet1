@@ -1,0 +1,30 @@
+{% extends 'application/base.html' %}
+{% load static %}
+
+{% block home %}
+<link rel="stylesheet" href="{% static 'application/CSS/Empruntre.css' %}">
+<div class="container">
+    <h2>Emprunter le livre : {{ livre.titre }}</h2>
+    <div class="book-info">
+        <img src="{{ livre.imageUrl }}" alt="Image de {{ livre.titre }}" class="book-image" style="max-width:120px;">
+        <div class="book-details">
+            <h3>{{ livre.titre }}</h3>
+            <p><strong>Auteur :</strong> {{ livre.auteur }}</p>
+            <p><strong>Catégorie :</strong> {{ livre.get_categorie_display }}</p>
+            <p><strong>Exemplaires disponibles :</strong> {{ livre.nbExemplaires }}</p>
+        </div>
+    </div>
+    <form method="post" action="{% url 'payer_emprunt' livre.isbn %}">
+        {% csrf_token %}
+        <div class="date-retour">
+            <label for="dateRetour">Date de retour</label>
+            <input type="date" id="dateRetour" name="dateRetour" required>
+        </div>
+        <div class="mb-3">
+            <p>Montant à payer : {{ livre.prix }} dirhams</p>
+        </div>
+        <button type="submit" class="detail-button">payer</button>
+        <a href="{% url 'book_detail' livre.isbn %}" class="detail-button1">Annuler</a>
+    </form>
+</div>
+{% endblock %}

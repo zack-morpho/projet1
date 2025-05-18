@@ -1,0 +1,212 @@
+/* Elegant home page styling for books by category page */
+
+:root {
+    --primary-color: #3a6ea5;
+    --primary-light: #5a8ec5;
+    --primary-dark: #2c5282;
+    --secondary-color: #f8f9fa;
+    --accent-color: #6c757d;
+    --success-color: #28a745;
+    --danger-color: #dc3545;
+    --border-radius: 12px;
+    --box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    --transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+    --text-color: #2d3748;
+    --bg-pattern: url('/static/application/images/pattern.png');
+}
+
+/* Elegant styling for Category Books page */
+.page-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #f8f9fa;
+    background-image: linear-gradient(135deg, rgba(240, 244, 248, 0.8) 0%, rgba(255, 255, 255, 0.8) 100%);
+    z-index: -1;
+}
+
+.container {
+    background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(232,201,153,0.2));
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 10px;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    max-width: 1200px;
+    margin: 30px auto;
+    padding: 20px;
+}
+
+.category-title {
+    text-align: center;
+    font-size: 2.2rem;
+    color: #E8C999;
+    margin: 20px 0 40px 0;
+    position: relative;
+    padding-bottom: 15px;
+    font-weight: 700;
+    display: block;
+    width: 100%;
+}
+
+.category-title:after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 3px;
+    background: #3498db;
+    border-radius: 3px;
+}
+
+.book-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 30px;
+    margin-top: 30px;
+}
+
+.book-item {
+    background: white;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s, box-shadow 0.3s;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.book-item:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+}
+
+.book-image-container {
+    height: 320px;
+    overflow: hidden;
+    position: relative;
+}
+
+.book-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s;
+}
+
+.book-item:hover .book-image {
+    transform: scale(1.05);
+}
+
+.book-content {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+.title-link {
+    text-decoration: none;
+}
+
+.book-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #2c3e50;
+    margin: 0 0 10px 0;
+    transition: color 0.3s;
+}
+
+.title-link:hover .book-title {
+    color: #3498db;
+}
+
+.book-author {
+    color: #7f8c8d;
+    font-size: 0.95rem;
+    margin-bottom: 15px;
+}
+
+.book-status {
+    display: inline-block;
+    padding: 6px 12px;
+    border-radius: 50px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin: 10px 0;
+    text-align: center;
+}
+
+.disponible {
+    background-color: #e8f5e9;
+    color: #2e7d32;
+}
+
+.indisponible {
+    background-color: #ffebee;
+    color: #c62828;
+}
+
+.detail-button {
+    display: inline-block;
+    background-color: #3498db;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.9rem;
+    text-align: center;
+    margin-top: auto;
+    transition: background-color 0.3s, transform 0.2s;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+}
+
+.detail-button:hover {
+    background-color: #2980b9;
+    transform: translateY(-2px);
+}
+
+.empty-message {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 40px;
+    background: white;
+    border-radius: 10px;
+    font-size: 1.1rem;
+    color: #7f8c8d;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .book-list {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 20px;
+    }
+    
+    .book-image-container {
+        height: 250px;
+    }
+    
+    .category-title {
+        font-size: 1.8rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .book-list {
+        grid-template-columns: 1fr;
+    }
+    
+    .container {
+        padding: 15px;
+    }
+}
+

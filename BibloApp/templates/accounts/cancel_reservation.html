@@ -1,0 +1,43 @@
+{% extends "accounts/account_base.html" %}
+
+{% block title %}Annuler une Réservation - ZakBooks{% endblock %}
+
+{% block account_content %}
+<div class="content-section">
+    <div class="section-header">
+        <h2><i class="fas fa-times-circle"></i> Annuler une Réservation</h2>
+    </div>
+    
+    <div class="confirmation-box">
+        <div class="book-info">
+            <h3>{{ reservation.livre.titre }}</h3>
+            <p><strong>Auteur:</strong> {{ reservation.livre.auteur }}</p>
+            <p><strong>Réservé le:</strong> {{ reservation.dateReservation }}</p>
+            {% if reservation.dateRetour %}
+            <p><strong>Date de retour prévue:</strong> {{ reservation.dateRetour }}</p>
+            {% endif %}
+        </div>
+        
+        <div class="warning-message">
+            <i class="fas fa-exclamation-triangle"></i>
+            <p>Êtes-vous sûr de vouloir annuler cette réservation ? Cette action est irréversible.</p>
+        </div>
+        
+        <form method="post" action="{% url 'cancel-reservation' reservation.id %}">
+            {% csrf_token %}
+            
+            {% if is_admin %}
+            <div class="form-group">
+                <label for="reason">Raison de l'annulation (sera envoyée à l'utilisateur)</label>
+                <textarea id="reason" name="reason" rows="3" class="form-control" required></textarea>
+            </div>
+            {% endif %}
+            
+            <div class="form-actions">
+                <a href="{% url 'user-reservations' %}" class="btn-secondary">Annuler</a>
+                <button type="submit" class="btn-danger">Confirmer l'annulation</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
