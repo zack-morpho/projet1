@@ -34,6 +34,9 @@ ALLOWED_HOSTS = [
     '127.0.0.1',
     'localhost',
 ]
+CSRF_TRUSTED_ORIGINS = [
+    "https://projet1-production-e398.up.railway.app"
+]
 
 
 # Application definition
