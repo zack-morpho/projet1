@@ -22,7 +22,7 @@ ALLOWED_HOSTS = [
 ]
 
 CSRF_TRUSTED_ORIGINS = [
-    "https://projet1-production-e398.up.railway.app"
+    "https://projet1-production-e398.up.railway.app",
 ]
 
 # Application definition
@@ -39,7 +39,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',  # ✅ ajouté pour servir les fichiers statiques
+    'whitenoise.middleware.WhiteNoiseMiddleware',  # ✅ sert les fichiers statiques en prod
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -56,7 +56,7 @@ TEMPLATES = [
         'DIRS': [
             BASE_DIR / "templates",
             BASE_DIR / "BibloApp" / "templates",
-            BASE_DIR / "static",
+            # Ne pas mettre BASE_DIR / "static" ici, ce n’est pas un dossier de templates
         ],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -75,18 +75,23 @@ WSGI_APPLICATION = 'zakbooks.wsgi.application'
 LOGIN_URL = '/login/'
 LOGOUT_REDIRECT_URL = '/login/'
 
-# Static files configuration
+# Static files (CSS, JavaScript, Images)
 STATIC_URL = '/static/'
+
+# Dossiers où Django va chercher les fichiers statiques pendant dev
 STATICFILES_DIRS = [BASE_DIR / "static"]
+
+# Dossier où collectstatic copie les fichiers pour la prod
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
+# Whitenoise gère le stockage compressé des fichiers statiques
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-# Media files
+# Media files (uploads utilisateurs)
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
-# Database (SQLite)
+# Base de données SQLite (à changer en prod si nécessaire)
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -94,7 +99,7 @@ DATABASES = {
     }
 }
 
-# Password validation
+# Validation mots de passe
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
     {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
@@ -102,7 +107,7 @@ AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
 ]
 
-# Internationalization
+# Internationalisation
 LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'UTC'
 USE_I18N = True
