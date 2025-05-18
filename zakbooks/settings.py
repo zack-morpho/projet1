@@ -76,7 +76,7 @@ LOGIN_URL = '/login/'
 LOGOUT_REDIRECT_URL = '/login/'
 
 # Static files (CSS, JavaScript, Images)
-STATIC_URL = '/static/'
+STATIC_URL = 'static/'
 
 # Dossiers où Django va chercher les fichiers statiques pendant dev
 STATICFILES_DIRS = [
@@ -90,11 +90,10 @@ STATIC_ROOT = BASE_DIR / "staticfiles"
 # Configuration de WhiteNoise pour servir les fichiers statiques
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
 
-# Activer le debug pour les fichiers statiques si DEBUG est True
-if DEBUG:
-    WHITENOISE_USE_FINDERS = True
-    WHITENOISE_AUTOREFRESH = True
-    WHITENOISE_MANIFEST_STRICT = False
+# Activer le debug pour les fichiers statiques
+WHITENOISE_USE_FINDERS = True
+WHITENOISE_AUTOREFRESH = True
+WHITENOISE_MANIFEST_STRICT = False
 
 # Media files (uploads utilisateurs)
 MEDIA_URL = '/media/'
